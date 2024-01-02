@@ -1,0 +1,28 @@
+{% extends "main.html" %}
+{% load bootstrap5 %}
+{% load static %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{% block content %}
+<div class="text-center border-bottom" style="
+position: absolute;
+bottom:0;
+">
+  <h1 class="display-4 fw-bold text-body-emphasis">Imag</h1>
+  <div class="col-lg-6 mx-auto">
+    <p class="lead mb-4">
+      Добро пожаловать в наш интернет-магазин игровых консолей и игр! У нас вы найдете широкий ассортимент игровых консолей, от последних моделей до классических платформ, а также огромный выбор популярных игр для всех возрастов и жанров.
+    </p>
+    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-5">
+      <button type="button" class="btn btn-primary btn-lg px-4 me-sm-3">Войти</button>
+      <button type="button" class="btn btn-outline-secondary btn-lg px-4">Товары</button>
+    </div>
+  </div>
+  <div class="overflow-hidden" style="max-height: 30vh;">
+    <div class="container px-5">
+      <img src="{% static "img/con1.jpeg" %}" class="img-fluid border rounded-3 shadow-lg mb-4" alt="Example image" width="700" height="500" loading="lazy">
+    </div>
+  </div>
+</div>
+{% endblock content %}
