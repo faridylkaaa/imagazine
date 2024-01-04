@@ -7,9 +7,9 @@
 {% block content %}
 <div style='width: 40%;'>
 <h1>
-    Вход
+    Регистрация
 </h1>
-<form method="post">
+<form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="form-error">{{ form.non_field_errors }}</div>
     {% for f in form %}

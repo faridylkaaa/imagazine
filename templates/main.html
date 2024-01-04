@@ -4,7 +4,7 @@
 <html>
  <head>
   <meta charset="utf-8" />
-  <title>imag</title>
+  <title>{{ title }}</title>
   {% bootstrap_css %}
     {% bootstrap_javascript %}
     
@@ -98,6 +98,7 @@
     
     <!-- Custom styles for this template -->
     <link href="{% static "css/sidebars.css" %}" rel="stylesheet">
+    {% block head %}{% endblock head %}
  </head>
  <body>
     <div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary" style="width: 280px; position: fixed!important; height: 100%;">
@@ -164,7 +165,7 @@
           <ul class="dropdown-menu text-small shadow" style="">
             <li><a class="dropdown-item" href="#">Профиль</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Выйти</a></li>
+            <li><a class="dropdown-item" href="{% url "users:logout" %}">Выйти</a></li>
           </ul>
           {% else %}
           <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
@@ -174,13 +175,22 @@
           <ul class="dropdown-menu text-small shadow" style="">
             <li><a class="dropdown-item" href="{% url "users:login" %}">Войти</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Зарегистрироваться</a></li>
+            <li><a class="dropdown-item" href="{% url "users:create" %}">Зарегистрироваться</a></li>
           </ul>
           {% endif %}
         </div>
       </div>
     <div style="margin-left: 280px;">
+      {% if messages %}
+          <ul class="messages">
+              {% for message in messages %}
+              <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+              {% endfor %}
+          </ul>
+          {% endif %}
+        <div class='center'>
         {% block content %}{% endblock content %}
+        </div>
     </div>
  </body>
 </html>
