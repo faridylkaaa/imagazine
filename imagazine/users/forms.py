@@ -25,3 +25,12 @@ class UserCreateForm(UserCreationForm):
                   'date_of_birth',
                   'photo', 
                   'password1', 'password2']
+        
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if User.objects.filter(email=email):
+            if User.objects.get(email=email).is_active == True:
+                raise forms.ValidationError("Такой E-mail уже существует!")
+            else:
+                User.objects.get(email=email).delete()
+        return email

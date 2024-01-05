@@ -91,6 +91,8 @@ body {
     border-top-right-radius: 0;
   }
   
-
-
-  alert alert-warning
+  .messages {
+    padding-top: 10px;
+    width: 446px;
+    margin: 0 auto;
+  }
