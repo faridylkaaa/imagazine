@@ -1,0 +1,25 @@
+{% extends "main.html" %}
+{% load bootstrap5 %}
+{% load static %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{% block content %}
+<div style='width: 40%;'>
+    <div class="card">
+        <img src="{% static "img/img_avatar.png" %}" alt="Avatar" style="width:100%">
+        <div class="container">
+          <h4 style="
+          margin: 10px 0;"><b>{{ object.email }}</b></h4>
+          <form action="{% url "users:password_reset" %}" style="
+          margin: 10px 0;">
+            <button type="submit" class="btn btn-primary" style="margin:0 10px;">Изменить пароль</button>
+        </form>
+        <form action="{% url "users:delete" pk=request.user.id %}" style="
+          margin: 10px 0;">
+            <button type="submit" class="btn btn-danger" style="margin:0 10px;">Удалить</button>
+        </form>
+        </div>
+      </div>
+</div>
+{% endblock content %}

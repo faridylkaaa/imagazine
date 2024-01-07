@@ -1,3 +1,4 @@
+from typing import Any
 from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib.auth.views import LoginView
@@ -13,6 +14,9 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes
 from django.contrib.sites.models import Site
 from django.core.mail import send_mail
+from django.views.generic.detail import DetailView
+from .mixins import RightUserMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 class LoginUserView(SuccessMessageMixin, LoginView):
@@ -57,11 +61,15 @@ class CreateUserView(SuccessMessageMixin, CreateView):
         )
         return redirect(reverse_lazy('users:email_confirmation_sent'))
     
-def logout_user(request, *args, **kwargs):
-    logout(request)
-    messages.success(request, 'Пользователь вышел')
-    return redirect(reverse_lazy('main'))
-
+def logout_user(request):
+    if request.user.is_authenticated:
+        logout(request)
+        messages.success(request, 'Пользователь вышел')
+        return redirect(reverse_lazy('main'))
+    else:
+        messages.info(request, 'Вы не авторизованы')
+        return redirect(reverse_lazy('users:login'))
+    
 class ConfirmEmailView(View):
     def get(self, request, uid64, token):
         try:
@@ -77,3 +85,20 @@ class ConfirmEmailView(View):
             return redirect(reverse_lazy('users:login'))
         else:
             return redirect(reverse_lazy('users:email_not_confirm'))
+        
+class ProfileUserView(RightUserMixin, DetailView):
+    model = User
+    template_name = 'users/profile.html'
+    
+    
+    def get_context_data(self, **kwargs: Any):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Профиль'
+        return context
+    
+class DeleteUserView(LoginRequiredMixin, SuccessMessageMixin, RightUserMixin, DeleteView):
+    model = User
+    template_name = 'users/delete.html'
+    success_message = 'Пользователь удален'
+    login_url = reverse_lazy('users:login')
+    success_url = reverse_lazy('main')
