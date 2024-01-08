@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'imagazine',
     'bootstrap5',
     'imagazine.users',
+    'imagazine.goods',
+    'imagazine.labels'
 ]
 
 MIDDLEWARE = [
