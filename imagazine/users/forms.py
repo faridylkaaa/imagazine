@@ -34,3 +34,11 @@ class UserCreateForm(UserCreationForm):
             else:
                 User.objects.get(email=email).delete()
         return email
+    
+class UserUpdateForm(forms.ModelForm):
+    photo = forms.ImageField(label='Фото', required=False, widget=forms.FileInput(attrs={'class': 'form-control'}))
+    
+    class Meta:
+        model = User
+        fields = [
+                  'photo']

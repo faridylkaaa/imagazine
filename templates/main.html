@@ -7,7 +7,11 @@
   <title>{{ title }}</title>
   {% bootstrap_css %}
     {% bootstrap_javascript %}
-    
+    <script>
+      $(document).ready(function(){
+          $('input').addClass('form-control');
+      });
+  </script>
 
     <link href="https://getbootstrap.com/docs/5.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <!-- Favicons -->
@@ -159,7 +163,7 @@
         <div class="dropdown">
           {% if request.user.is_authenticated %}
           <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="{% static "img/img_avatar.png" %}" alt="" width="32" height="32" class="rounded-circle me-2">
+            <img src="{{ request.user.photo.url }}" alt="" width="32" height="32" class="rounded-circle me-2">
             <strong>Пользователь</strong>
           </a>
           <ul class="dropdown-menu text-small shadow" style="">

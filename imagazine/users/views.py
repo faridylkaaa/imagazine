@@ -102,3 +102,11 @@ class DeleteUserView(LoginRequiredMixin, SuccessMessageMixin, RightUserMixin, De
     success_message = 'Пользователь удален'
     login_url = reverse_lazy('users:login')
     success_url = reverse_lazy('main')
+    
+class UpdateUserView(LoginRequiredMixin, RightUserMixin, SuccessMessageMixin, UpdateView):
+    model = User
+    form_class = UserUpdateForm
+    template_name = 'users/update.html'
+    success_message = 'Пользователь изменен'
+    login_url = reverse_lazy('users:login')
+    success_url = reverse_lazy('main')

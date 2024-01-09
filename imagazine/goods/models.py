@@ -25,3 +25,11 @@ class Console(models.Model):
     
     def __str__(self) -> str:
         return self.name
+    
+class GalleryConsole(models.Model):
+    image = models.ImageField(upload_to='images/goods/console/')
+    good = models.ForeignKey(Console, on_delete=models.CASCADE)
+    
+class GalleryGame(models.Model):
+    image = models.ImageField(upload_to='images/goods/game/')
+    good = models.ForeignKey(Game, on_delete=models.CASCADE)

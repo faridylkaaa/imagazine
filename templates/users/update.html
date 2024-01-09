@@ -1,0 +1,26 @@
+{% extends "main.html" %}
+{% load bootstrap5 %}
+{% load static %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{% block content %}
+<div style='width: 40%;'>
+<h1>
+    Изменение пользователя
+</h1>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-error">{{ form.non_field_errors }}</div>
+    {% for f in form %}
+    <p ><label class="form-label" for="{{ f.id_for_label }}">{{f.label}}: </label>{{ f }}</p>
+    <div class="form-error">{{ f.errors }}</div>
+    {% endfor %}
+    <p><button type="submit" class="btn btn-primary">Изменить фото</button></p>
+    
+</form>
+<form action="{% url "users:password_reset" %}" style="">
+            <button type="submit" class="btn btn-warning" style="margin:0 10px;">Изменить пароль</button>
+        </form>
+</div>
+{% endblock content %}
