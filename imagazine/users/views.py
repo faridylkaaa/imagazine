@@ -90,7 +90,6 @@ class ProfileUserView(RightUserMixin, DetailView):
     model = User
     template_name = 'users/profile.html'
     
-    
     def get_context_data(self, **kwargs: Any):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Профиль'

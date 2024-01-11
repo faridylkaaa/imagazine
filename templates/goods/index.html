@@ -11,15 +11,19 @@
                     <div class="col-md-8 col-lg-6">
                             <div class="header">
                                     <h3>лучшие продукты</h3>
-                                    <h2>КОНСОЛИ И ИГРЫ</h2>
+                                    <h2>ИГРЫ</h2>
                             </div>
                     </div>
             </div>
             <div class="row">
+                {% for game in page_obj %}
                     <!-- Single Product -->
                     <div class="col-md-6 col-lg-4 col-xl-3">
                             <div id="product-1" class="single-product">
-                                    <div class="part-1">
+                                    <div class="part-1" style="background: url({{game.photos.all.first.image.url}}) no-repeat center;    background-size: contain;
+                                    height: 100vh;
+                                    background-position: center;
+                                    background-repeat: no-repeat;">
                                             <ul>
                                                     <li><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
                                                     <li><a href="#"><i class="fas fa-heart"></i></a></li>
@@ -28,139 +32,39 @@
                                             </ul>
                                     </div>
                                     <div class="part-2">
-                                            <h3 class="product-title">Here Product Title</h3>
-                                            <h4 class="product-old-price">$79.99</h4>
-                                            <h4 class="product-price">$49.99</h4>
+                                            <h3 class="product-title">{{ game.name }}</h3>
+                                            <h4 class="product-price">{{ game.price }}₽</h4>
                                     </div>
                             </div>
                     </div>
-                    <!-- Single Product -->
-                    <div class="col-md-6 col-lg-4 col-xl-3">
-                            <div id="product-2" class="single-product">
-                                    <div class="part-1">
-                                            <span class="discount">15% off</span>
-                                            <ul>
-                                                    <li><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
-                                                    <li><a href="#"><i class="fas fa-heart"></i></a></li>
-                                                    <li><a href="#"><i class="fas fa-plus"></i></a></li>
-                                                    <li><a href="#"><i class="fas fa-expand"></i></a></li>
-                                            </ul>
-                                    </div>
-                                    <div class="part-2">
-                                            <h3 class="product-title">Here Product Title</h3>
-                                            <h4 class="product-price">$49.99</h4>
-                                    </div>
-                            </div>
-                    </div>
-                    <!-- Single Product -->
-                    <div class="col-md-6 col-lg-4 col-xl-3">
-                            <div id="product-3" class="single-product">
-                                    <div class="part-1">
-                                            <ul>
-                                                    <li><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
-                                                    <li><a href="#"><i class="fas fa-heart"></i></a></li>
-                                                    <li><a href="#"><i class="fas fa-plus"></i></a></li>
-                                                    <li><a href="#"><i class="fas fa-expand"></i></a></li>
-                                            </ul>
-                                    </div>
-                                    <div class="part-2">
-                                            <h3 class="product-title">Here Product Title</h3>
-                                            <h4 class="product-old-price">$79.99</h4>
-                                            <h4 class="product-price">$49.99</h4>
-                                    </div>
-                            </div>
-                    </div>
-                    <!-- Single Product -->
-                    <div class="col-md-6 col-lg-4 col-xl-3">
-                            <div id="product-4" class="single-product">
-                                    <div class="part-1">
-                                            <span class="new">new</span>
-                                            <ul>
-                                                    <li><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
-                                                    <li><a href="#"><i class="fas fa-heart"></i></a></li>
-                                                    <li><a href="#"><i class="fas fa-plus"></i></a></li>
-                                                    <li><a href="#"><i class="fas fa-expand"></i></a></li>
-                                            </ul>
-                                    </div>
-                                    <div class="part-2">
-                                            <h3 class="product-title">Here Product Title</h3>
-                                            <h4 class="product-price">$49.99</h4>
-                                    </div>
-                            </div>
-                    </div>
-                    <!-- Single Product -->
-                    <div class="col-md-6 col-lg-4 col-xl-3">
-                            <div id="product-1" class="single-product">
-                                    <div class="part-1">
-                                            <ul>
-                                                    <li><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
-                                                    <li><a href="#"><i class="fas fa-heart"></i></a></li>
-                                                    <li><a href="#"><i class="fas fa-plus"></i></a></li>
-                                                    <li><a href="#"><i class="fas fa-expand"></i></a></li>
-                                            </ul>
-                                    </div>
-                                    <div class="part-2">
-                                            <h3 class="product-title">Here Product Title</h3>
-                                            <h4 class="product-old-price">$79.99</h4>
-                                            <h4 class="product-price">$49.99</h4>
-                                    </div>
-                            </div>
-                    </div>
-                    <!-- Single Product -->
-                    <div class="col-md-6 col-lg-4 col-xl-3">
-                            <div id="product-2" class="single-product">
-                                    <div class="part-1">
-                                            <span class="discount">15% off</span>
-                                            <ul>
-                                                    <li><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
-                                                    <li><a href="#"><i class="fas fa-heart"></i></a></li>
-                                                    <li><a href="#"><i class="fas fa-plus"></i></a></li>
-                                                    <li><a href="#"><i class="fas fa-expand"></i></a></li>
-                                            </ul>
-                                    </div>
-                                    <div class="part-2">
-                                            <h3 class="product-title">Here Product Title</h3>
-                                            <h4 class="product-price">$49.99</h4>
-                                    </div>
-                            </div>
-                    </div>
-                    <!-- Single Product -->
-                    <div class="col-md-6 col-lg-4 col-xl-3">
-                            <div id="product-3" class="single-product">
-                                    <div class="part-1">
-                                            <ul>
-                                                    <li><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
-                                                    <li><a href="#"><i class="fas fa-heart"></i></a></li>
-                                                    <li><a href="#"><i class="fas fa-plus"></i></a></li>
-                                                    <li><a href="#"><i class="fas fa-expand"></i></a></li>
-                                            </ul>
-                                    </div>
-                                    <div class="part-2">
-                                            <h3 class="product-title">Here Product Title</h3>
-                                            <h4 class="product-old-price">$79.99</h4>
-                                            <h4 class="product-price">$49.99</h4>
-                                    </div>
-                            </div>
-                    </div>
-                    <!-- Single Product -->
-                    <div class="col-md-6 col-lg-4 col-xl-3">
-                            <div id="product-4" class="single-product">
-                                    <div class="part-1">
-                                            <span class="new">new</span>
-                                            <ul>
-                                                    <li><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
-                                                    <li><a href="#"><i class="fas fa-heart"></i></a></li>
-                                                    <li><a href="#"><i class="fas fa-plus"></i></a></li>
-                                                    <li><a href="#"><i class="fas fa-expand"></i></a></li>
-                                            </ul>
-                                    </div>
-                                    <div class="part-2">
-                                            <h3 class="product-title">Here Product Title</h3>
-                                            <h4 class="product-price">$49.99</h4>
-                                    </div>
-                            </div>
-                    </div>
+                    {% endfor %}
+                    
             </div>
     </div>
 </section>
+<nav class="pagination-outer" aria-label="Page navigation">
+        <ul class="pagination">
+                {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a href="?page={{ page_obj.previous_page_number }}" class="page-link" aria-label="Previous">
+                    <span aria-hidden="true">«</span>
+                </a>
+            </li>
+            {% endif %}
+                {% for p in paginator.page_range %}
+            {% if page_obj.number == p %}
+            <li class="page-item active"><a class="page-link" href="?page={{ p }}">{{p}}</a></li>
+            {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
+            <li class="page-item"><a class="page-link" href="?page={{ p }}">{{p}}</a></li>
+            {% endif %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+            <li class="page-item">
+                <a href="?page={{ page_obj.next_page_number }}" class="page-link" aria-label="Next">
+                    <span aria-hidden="true">»</span>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
 {% endblock full_content %}
