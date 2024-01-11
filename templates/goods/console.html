@@ -11,34 +11,29 @@
                     <div class="col-md-8 col-lg-6">
                             <div class="header">
                                     <h3>лучшие продукты</h3>
-                                    <h2>ИГРЫ</h2>
+                                    <h2>КОНСОЛИ</h2>
                             </div>
                     </div>
             </div>
             <div class="row">
-                {% for game in page_obj %}
+                {% for console in page_obj %}
                     <!-- Single Product -->
                     <div class="col-md-6 col-lg-4 col-xl-3">
                             <div id="product-1" class="single-product">
-                                    <div class="part-1" style="background: url({{game.photos.all.first.image.url}}) no-repeat center;    background-size: contain;
+                                    <div class="part-1" style="background: url({{console.photos.all.first.image.url}}) no-repeat center;    background-size: contain;
                                     height: 100vh;
                                     background-position: center;
                                     background-repeat: no-repeat;">
-                                    {% if game.count == 0 %}
-                                    <span class="new">НЕ В НАЛИЧИИ</span>
-                                    {% elif game.count <= 3 %}
-                                    <span class="discount">МАЛО</span>
-                                    {% endif %}
                                             <ul>
                                                     <li><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
                                                     <li><a href="#"><i class="fas fa-heart"></i></a></li>
                                                     <li><a href="#"><i class="fas fa-plus"></i></a></li>
-                                                    <li><a href="{% url "goods:profile" pk=game.id %}"><i class="fas fa-expand"></i></a></li>
+                                                    <li><a href="{% url "goods:console" pk=console.id %}"><i class="fas fa-expand"></i></a></li>
                                             </ul>
                                     </div>
                                     <div class="part-2">
-                                            <h3 class="product-title"><a href="{% url "goods:profile" pk=game.id %}">{{ game.name }}</a></h3>
-                                            <h4 class="product-price">{{ game.price }}₽</h4>
+                                            <h3 class="product-title"><a href="{% url "goods:console" pk=console.id %}">{{ console.name }}</a></h3>
+                                            <h4 class="product-price">{{ console.price }}₽</h4>
                                     </div>
                             </div>
                     </div>

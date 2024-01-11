@@ -1,0 +1,38 @@
+{% extends "goods/goods.html" %}
+{% load bootstrap5 %}
+{% load static %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{% block full_content %}
+<div class="row sd-6 center" style="align-items: start;">
+    <div class="col-12 mb-4">
+      <span class="badge bg-pastel-primary text-primary text-uppercase-bold-sm">
+        Все категории
+      </span>
+    </div>
+
+    <!-- Category -->
+    <div class="col-md-3 mb-4">
+      <a href="{% url "goods:index" %}" class="card align-items-center text-decoration-none border-0 hover-lift-light py-4">
+        <span class="icon-circle icon-circle-lg bg-pastel-primary text-primary">
+          <img src="https://img.icons8.com/ios/50/ps-controller.png" width="512" height="50" viewBox="0 0 512 512"><title>ionicons-v5-c</title></img>
+        </span>
+        <span class="text-dark mt-3">
+          Игры
+        </span>
+      </a>
+    </div>
+
+    <!-- Category -->
+    <div class="col-md-3 mb-4">
+      <a href="{% url "goods:consoles_index" %}" class="card align-items-center text-decoration-none border-0 hover-lift-light py-4">
+        <span class="icon-circle icon-circle-lg bg-pastel-primary text-primary">
+          <img src="https://img.icons8.com/clouds/100/xbox-series-x.png" width="100" height="100" viewBox="0 0 512 512"><title>ionicons-v5-e</title></img>
+        </span>
+        <span class="text-dark mt-3">
+          Консоли
+        </span>
+      </a>
+    </div>
+{% endblock %}
