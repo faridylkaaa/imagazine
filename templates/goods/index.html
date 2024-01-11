@@ -28,11 +28,11 @@
                                                     <li><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
                                                     <li><a href="#"><i class="fas fa-heart"></i></a></li>
                                                     <li><a href="#"><i class="fas fa-plus"></i></a></li>
-                                                    <li><a href="#"><i class="fas fa-expand"></i></a></li>
+                                                    <li><a href="{% url "goods:profile" pk=game.id %}"><i class="fas fa-expand"></i></a></li>
                                             </ul>
                                     </div>
                                     <div class="part-2">
-                                            <h3 class="product-title">{{ game.name }}</h3>
+                                            <h3 class="product-title"><a href="{% url "goods:profile" pk=game.id %}">{{ game.name }}</a></h3>
                                             <h4 class="product-price">{{ game.price }}₽</h4>
                                     </div>
                             </div>
