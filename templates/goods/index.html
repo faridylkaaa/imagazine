@@ -1,5 +1,6 @@
 {% extends "goods/goods.html" %}
 {% load bootstrap5 %}
+{% load bootstrap %}
 {% load static %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
@@ -15,7 +16,33 @@
                             </div>
                     </div>
             </div>
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+            <button class="btn btn-secondary" style="margin-bottom: 20px;">Скрыть/показать фильтр</button>
+            <div class="block_with_text" style="display: none;">
+                {% if page_obj.number == 1 %}
+                {% if filterset.is_bound %}
+                <form action="{% url "goods:index" %}">
+                <button type="submit" class="btn btn-info" style="margin:0 10px;">Очистить фильтр</button>
+                </form>
+                {% endif %}
+            <form action="" method="get">
+                {{ filterset.form|bootstrap }}
+                <input type="submit" class="btn btn-primary" value='Применить' style="margin-top: 20px; margin-bottom: 20px;"/>
+              </form>
+              {% endif %}
+
+            </div>
+                <script type="text/javascript">
+                    $('.btn').click(function(){
+              $(".block_with_text").fadeToggle(100);
+            });  
+                </script>
+            
+            <div class="as-console-wrapper"><div class="as-console"></div></div>
             <div class="row">
+                {% if page_obj.paginator.count == 0 %}
+                <h1>Похоже, товаров по вашему запросу нет!</h1>
+                {% else %}
                 {% for game in page_obj %}
                     <!-- Single Product -->
                     <div class="col-md-6 col-lg-4 col-xl-3">
@@ -45,8 +72,10 @@
                     {% endfor %}
                     
             </div>
+            {% endif %}
     </div>
 </section>
+{% if page_obj.paginator.count != 0 %}
 <nav class="pagination-outer" aria-label="Page navigation">
         <ul class="pagination">
                 {% if page_obj.has_previous %}
@@ -72,4 +101,5 @@
             {% endif %}
         </ul>
     </nav>
+{% endif %}
 {% endblock full_content %}

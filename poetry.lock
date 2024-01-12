@@ -53,6 +53,19 @@ argon2 = ["argon2-cffi (>=19.1.0)"]
 bcrypt = ["bcrypt"]
 
 [[package]]
+name = "django-bootstrap-form"
+version = "3.4"
+description = "django-bootstrap-form"
+optional = false
+python-versions = "*"
+files = [
+    {file = "django-bootstrap-form-3.4.tar.gz", hash = "sha256:de3f7893e515352834d446c441c0cb861637f92cebbe59d8229469c6cd3dc640"},
+]
+
+[package.dependencies]
+django = ">=1.5"
+
+[[package]]
 name = "django-bootstrap-v5"
 version = "1.0.11"
 description = "Bootstrap 5 support for Django projects"
@@ -69,6 +82,20 @@ django = ">=2.2,<5.0"
 
 [package.extras]
 docs = ["m2r2 (>=0.2.5,<0.3.0)", "sphinx (>=4.4,<5.0)", "sphinx_rtd_theme (>=1.0,<2.0)"]
+
+[[package]]
+name = "django-filter"
+version = "23.5"
+description = "Django-filter is a reusable Django application for allowing users to filter querysets dynamically."
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "django-filter-23.5.tar.gz", hash = "sha256:67583aa43b91fe8c49f74a832d95f4d8442be628fd4c6d65e9f811f5153a4e5c"},
+    {file = "django_filter-23.5-py3-none-any.whl", hash = "sha256:99122a201d83860aef4fe77758b69dda913e874cc5e0eaa50a86b0b18d708400"},
+]
+
+[package.dependencies]
+Django = ">=3.2"
 
 [[package]]
 name = "pillow"
@@ -210,4 +237,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "554bc3e8c5c5c29fc26d4703292c08da47678f6ac08572a364762bdec5b2d90a"
+content-hash = "03badc011abc407595dd02225dd86f164e3880aea6eaf3c8a9b275180a2cc349"

@@ -46,7 +46,9 @@ INSTALLED_APPS = [
     'bootstrap5',
     'imagazine.users',
     'imagazine.goods',
-    'imagazine.labels'
+    'imagazine.labels',
+    'django_filters',
+    'bootstrapform'
 ]
 
 MIDDLEWARE = [

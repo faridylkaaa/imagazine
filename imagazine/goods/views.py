@@ -5,9 +5,13 @@ from django.shortcuts import render
 from django.views import View
 from django.views.generic import ListView, DetailView
 from .models import Game, Console
+from .filters import GameFilter
+
+
 
 # Create your views here.
 class GamesIndexView(ListView):
+    filterset_class = GameFilter
     paginate_by = 8
     template_name = 'goods/index.html'
     context_object_name = 'games'
@@ -15,10 +19,13 @@ class GamesIndexView(ListView):
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context['title'] = 'Игры'
+        context['filterset'] = self.filterset
         return context
     
     def get_queryset(self):
-        return Game.objects.all().order_by('-count')
+        queryset = Game.objects.all()
+        self.filterset = self.filterset_class(self.request.GET, queryset=queryset)
+        return self.filterset.qs.order_by('-count')
     
 class ProfileGameView(DetailView):
     model = Game
