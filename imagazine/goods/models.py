@@ -1,5 +1,6 @@
 from django.db import models
 from imagazine.labels.models import *
+from imagazine.cart.models import Product
 
 # Create your models here.
 class Game(models.Model):
@@ -10,6 +11,7 @@ class Game(models.Model):
     developer = models.ForeignKey(Developer, on_delete=models.CASCADE)
     count = models.PositiveIntegerField()
     price = models.PositiveIntegerField()
+    product = models.OneToOneField(Product, blank=True, null=True, on_delete=models.CASCADE)
     
     def __str__(self) -> str:
         return self.name
@@ -20,6 +22,7 @@ class Console(models.Model):
     model_console = models.ForeignKey(ModelConsole, on_delete=models.CASCADE)
     count = models.PositiveIntegerField()
     price = models.PositiveIntegerField()
+    product = models.OneToOneField(Product, blank=True, null=True, on_delete=models.CASCADE)
     
     def __str__(self) -> str:
         return self.name

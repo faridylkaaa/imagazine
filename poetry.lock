@@ -84,6 +84,20 @@ django = ">=2.2,<5.0"
 docs = ["m2r2 (>=0.2.5,<0.3.0)", "sphinx (>=4.4,<5.0)", "sphinx_rtd_theme (>=1.0,<2.0)"]
 
 [[package]]
+name = "django-extensions"
+version = "2.1.7"
+description = "Extensions for Django"
+optional = false
+python-versions = "*"
+files = [
+    {file = "django-extensions-2.1.7.tar.gz", hash = "sha256:6766c573ffe63693cd485512a02f3b59622c884cbfeca241d1278ffdf0ac39ae"},
+    {file = "django_extensions-2.1.7-py2.py3-none-any.whl", hash = "sha256:c43e46cc95985c278afda645480b79f9a85cfe5a82c957accd08b8045793b707"},
+]
+
+[package.dependencies]
+six = ">=1.2"
+
+[[package]]
 name = "django-filter"
 version = "23.5"
 description = "Django-filter is a reusable Django application for allowing users to filter querysets dynamically."
@@ -197,6 +211,17 @@ files = [
 cli = ["click (>=5.0)"]
 
 [[package]]
+name = "six"
+version = "1.16.0"
+description = "Python 2 and 3 compatibility utilities"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
+files = [
+    {file = "six-1.16.0-py2.py3-none-any.whl", hash = "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"},
+    {file = "six-1.16.0.tar.gz", hash = "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"},
+]
+
+[[package]]
 name = "soupsieve"
 version = "2.5"
 description = "A modern CSS selector implementation for Beautiful Soup."
@@ -237,4 +262,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "03badc011abc407595dd02225dd86f164e3880aea6eaf3c8a9b275180a2cc349"
+content-hash = "2f309e1be5e855095934fc06a5ca7fbce5090760064a0a870581043cfbff3349"

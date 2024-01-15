@@ -22,3 +22,17 @@ class GameFilter(FilterSet):
     class Meta:
         model = Game
         fields = ['name', 'category', 'compatibility', 'developer']
+        
+class ConsoleFilter(FilterSet):
+    def __init__(self, *args, **kwargs):
+       super(ConsoleFilter, self).__init__(*args, **kwargs)
+       self.filters['model_console'].label="Модель консоли"
+       
+    name = filters.CharFilter(label='Название', lookup_expr='icontains')
+    price__gt = filters.NumberFilter(field_name='price', lookup_expr='gt', label='Цена от')
+    price__lt = filters.NumberFilter(field_name='price', lookup_expr='lt', label='Цена до')
+    avaliable = filters.BooleanFilter(method=filter, label='В наличии', )
+    
+    class Meta:
+        model = Console
+        fields = ['name', 'model_console']

@@ -25,7 +25,8 @@ urlpatterns = [
     path('', MainView.as_view(), name='main'),
     path('about/', AboutView.as_view(), name='about'),
     path('users/', include(('imagazine.users.urls', 'users'), namespace='users')),
-    path('goods/', include(('imagazine.goods.urls', 'goods'), namespace='goods'))
+    path('goods/', include(('imagazine.goods.urls', 'goods'), namespace='goods')),
+    path('cart/', include(('imagazine.cart.urls', 'cart'), namespace='cart'))
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) #new

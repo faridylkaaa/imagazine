@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'imagazine.goods',
     'imagazine.labels',
     'django_filters',
-    'bootstrapform'
+    'bootstrapform',
+    'imagazine.cart'
 ]
 
 MIDDLEWARE = [
@@ -164,3 +165,5 @@ SERVER_EMAIL = EMAIL_HOST_USER
 EMAIL_ADMIN = 'FaridBoss777@mail.ru'
 
 SITE_ID = 1
+
+CART_SESSION_ID = 'cart'
