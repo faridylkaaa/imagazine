@@ -1,5 +1,5 @@
 from django.conf import settings
-from imagazine.goods.models import Game
+from imagazine.goods.models import Goods
 
 class Cart:
     def __init__(self, request) -> None:
@@ -12,10 +12,9 @@ class Cart:
     def save(self):
         self.session.modified = True
         
-    def add(self, product, count):
+    def add(self, product, count=1):
         id_product = str(product.id)
-        is_game = isinstance(product.product_set, Game)
-        self.cart[id_product] = {'count': self.cart.get('count', 0) + count, 'price': product.product_set.price, 'is_game': is_game}
+        self.cart[id_product] = {'count': self.cart.get('count', 0) + count, 'price': product.price}
         self.save()
     
     def remove(self, product):

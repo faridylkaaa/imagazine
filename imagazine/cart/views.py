@@ -4,13 +4,13 @@ from .forms import CatrAddForm
 from .cart import Cart
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
-from .models import Product
+from imagazine.goods.models import Goods
 
 # Create your views here.
 class AddProductCartView(View):
     def post(self, request, *args, **kwargs):
         cart = Cart(request)
-        product = get_object_or_404(Cart, id=kwargs['id'])
+        product = get_object_or_404(Goods, id=kwargs['id'])
         form = CatrAddForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
@@ -23,7 +23,7 @@ class AddProductCartView(View):
 class RemoveProductCart(View):
     def post(self, request, *args, **kwargs):
         cart = Cart(request)
-        product = get_object_or_404(Product, id=kwargs['id'])
+        product = get_object_or_404(Goods, id=kwargs['id'])
         cart.remove(product)
         return redirect('cart:index')
     
@@ -32,5 +32,5 @@ class IndexCart(View):
         cart = Cart(request)
         d = dict()
         for i, v in cart.cart.items():
-            d[Product.obects.get(id=i).product_set] = {'count': v.count, 'price': v.price}
+            d[Goods.objects.get(id=i).get_model()] = {'count': v['count'], 'price': v['price']}
         return render(request, 'cart/index.html', {'cart': d, 'cart_': cart})

@@ -6,8 +6,8 @@ from django.views import View
 from django.views.generic import ListView, DetailView
 from .models import Game, Console
 from .filters import GameFilter, ConsoleFilter
-from imagazine.cart.models import Product
 from django.http import Http404
+from imagazine.cart.forms import CatrAddForm
 
 
 # Create your views here.
@@ -36,6 +36,7 @@ class ProfileGameView(DetailView):
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         content = super().get_context_data(**kwargs)
         content['title'] = 'Игра' + content['game'].name
+        content['form'] = CatrAddForm
         content['cat'] = '/'.join([name.name for name in content['game'].category.all()])
         return content
     
@@ -69,14 +70,3 @@ class ConsoleView(DetailView):
         content = super().get_context_data(**kwargs)
         content['title'] = 'Игра' + content['console'].name
         return content
-    
-    def get_object(self, queryset=None):
-        slug = self.kwargs.get('pk', None)
-        try:
-            print(Product.objects.get(id=slug).product_set)
-            return Product.objects.get(id=slug).console
-        except:
-            print(Product.objects.all(), slug)
-            print(Product.objects.get(id=slug).console)
-            print(dir(Product.objects.get(id=slug)))
-            raise Http404('Ох, нет объекта;)')

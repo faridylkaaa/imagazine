@@ -4,14 +4,14 @@ import django_filters
 
 def filter(queryset, name, value):
     if value == True:
-        return queryset.filter(count__gt=1)
+        return queryset.filter(count__gt=0)
     return queryset.filter(count__lt=1)
 
 class GameFilter(FilterSet):
     def __init__(self, *args, **kwargs):
        super(GameFilter, self).__init__(*args, **kwargs)
        self.filters['category'].label="Категория"
-       self.filters['compatibility'].label="Совместимость"
+       self.filters['model_console'].label="Совместимость"
        self.filters['developer'].label="Разработчик"
        
     name = filters.CharFilter(label='Название', lookup_expr='icontains')
@@ -21,7 +21,7 @@ class GameFilter(FilterSet):
     
     class Meta:
         model = Game
-        fields = ['name', 'category', 'compatibility', 'developer']
+        fields = ['name', 'category', 'model_console', 'developer']
         
 class ConsoleFilter(FilterSet):
     def __init__(self, *args, **kwargs):
