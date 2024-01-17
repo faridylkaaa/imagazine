@@ -52,7 +52,14 @@
                                     background-position: center;
                                     background-repeat: no-repeat;">
                                             <ul>
-                                                    <li><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
+                                                    <li>
+                                                        <form action="{% url "cart:add" id=console.id %}" method="post">
+                                                            {% csrf_token %}
+                                                            <button class="btn btn-white bg-white btn-md" style="border-radius: 0;">
+                                                            <i class="fas fa-shopping-cart"></i>
+                                                            </button>
+                                                        </form>
+                                                    </li>
                                                     <li><a href="#"><i class="fas fa-heart"></i></a></li>
                                                     <li><a href="#"><i class="fas fa-plus"></i></a></li>
                                                     <li><a href="{% url "goods:console" pk=console.id %}"><i class="fas fa-expand"></i></a></li>

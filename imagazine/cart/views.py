@@ -11,9 +11,9 @@ class AddProductCartView(View):
     def post(self, request, *args, **kwargs):
         cart = Cart(request)
         product = get_object_or_404(Goods, id=kwargs['id'])
-        form = CatrAddForm(request.POST)
+        form = CatrAddForm(request.POST, initial={'count': 1})
         if form.is_valid():
-            cd = form.cleaned_data
+            cd = form.clean()
             cart.add(product, cd['count'])
             messages.success(request, 'Товар добавлен в корзину успешно')
         else:
@@ -33,4 +33,4 @@ class IndexCart(View):
         d = dict()
         for i, v in cart.cart.items():
             d[Goods.objects.get(id=i).get_model()] = {'count': v['count'], 'price': v['price']}
-        return render(request, 'cart/index.html', {'cart': d, 'cart_': cart})
+        return render(request, 'cart/index.html', {'cart': d, 'cart_': cart, 'form': CatrAddForm})

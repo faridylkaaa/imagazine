@@ -35,14 +35,15 @@ class ProfileGameView(DetailView):
     
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         content = super().get_context_data(**kwargs)
-        content['title'] = 'Игра' + content['game'].name
+        content['title'] = content['game'].name
         content['form'] = CatrAddForm
         content['cat'] = '/'.join([name.name for name in content['game'].category.all()])
         return content
     
 class IndexView(View):
     def get(self, request, *args, **kwargs):
-        return render(request, 'goods/category.html')
+        form = CatrAddForm
+        return render(request, 'goods/category.html', {'form': form})
     
 class ConsolesView(ListView):
     context_object_name = 'consoles'
@@ -68,5 +69,6 @@ class ConsoleView(DetailView):
     
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         content = super().get_context_data(**kwargs)
-        content['title'] = 'Игра' + content['console'].name
+        content['form'] = CatrAddForm
+        content['title'] = content['console'].name
         return content

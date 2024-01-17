@@ -23,12 +23,17 @@ class Game(Goods):
     def __str__(self) -> str:
         return self.name
     
+    def is_game(self):
+        return True
+    
 class Console(Goods):
     pass
     
     def __str__(self) -> str:
         return self.name
     
+    def is_game(self):
+        return False
 
 class Gallery(models.Model):
     image = models.ImageField(upload_to='images/goods/console/') # вот тут бы ссылку поменять

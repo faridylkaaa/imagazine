@@ -14,7 +14,11 @@ class Cart:
         
     def add(self, product, count=1):
         id_product = str(product.id)
-        self.cart[id_product] = {'count': self.cart.get('count', 0) + count, 'price': product.price}
+        if id_product in self.cart.keys():
+            self.cart[id_product] = {'count': self.cart[id_product].get('count', 0) + count, 'price': product.price}
+        else:
+            self.cart[id_product] = {'count': count, 'price': product.price}
+
         self.save()
     
     def remove(self, product):
@@ -27,7 +31,8 @@ class Cart:
         return sum(c['count'] for c in self.cart.values())
     
     def get_total_price(self):
-        return sum(c['count'] * c['price'] for c in self.cart.values())
+        s = str(sum(c['count'] * c['price'] for c in self.cart.values()))
+        return ''.join([s[i] + ' ' if i % 3 == 0 and i != len(s) else s[i] for i in range(-1, -len(s)-1, -1)])[::-1]
     
     def clear_cart(self):
         del self.session[settings.CART_SESSION_ID]
