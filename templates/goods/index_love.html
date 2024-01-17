@@ -1,0 +1,75 @@
+{% extends "main.html" %}
+{% load bootstrap5 %}
+{% load static %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{% block nav_love%}
+active 
+{% endblock %}
+
+{% block full_content %}
+<section class="pt-5 pb-5">
+    <div class="container">
+      <div class="row w-100">
+          <div class="col-lg-12 col-md-12 col-12">
+              <h3 class="display-5 mb-2 text-center">Избранное</h3>
+                  {% if len == 0 %}
+                  <h1>
+                    В избранном пусто
+                  </h1>
+                  {% else %}
+              <table id="shoppingCart" class="table table-condensed table-responsive">
+                  <thead>
+                      <tr>
+                          <th style="width:60%">Товар</th>
+                          <th style="width:12%">Цена</th>
+                          <th style="width:16%"></th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                    {% for product in favor %}
+                      <tr>
+                          <td data-th="Product">
+                              <div class="row">
+                                  <div class="col-md-3 text-left">
+                                      <img src="{{ product.photos.first.image.url }}" alt="" class="img-fluid d-none d-md-block rounded mb-2 shadow ">
+                                  </div>
+                                  <div class="col-md-9 text-left mt-sm-2">
+                                    {% if product.get_model.is_game %}
+                                      <h4><a href='{% url "goods:profile" pk=product.id %}'>{{ product.name }}</a></h4>
+                                      {% else %}
+                                      <h4><a href='{% url "goods:console" pk=product.id %}'>{{ product.name }}</a></h4>
+                                      {% endif %}
+                                      <p class="font-weight-light"></p>
+                                  </div>
+                              </div>
+                          </td>
+                          <td data-th="Price">{{ product.price }}₽</td>
+                          <td class="actions" data-th="">
+                              <div class="text-right">
+                                
+                                  <form action="{% url "goods:remove_love" id=product.id pk=request.user.id %}" method="post">
+                                    {% csrf_token %}
+                                    <button class="btn btn-white border-secondary bg-white btn-md mb-2">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                              </div>
+                          </td>
+                      </tr>
+                      {% endfor %}
+                  </tbody>
+              </table>
+              {% endif %}
+          </div>
+      </div>
+      <div class="row mt-4 d-flex align-items-center">
+        <div class="col-sm-6 mb-3 mb-m-1 order-md-1 text-md-left">
+            <a href="{% url "goods:main" %}">
+                <i class="fas fa-arrow-left mr-2"></i> Начать покупки</a>
+        </div>
+    </div>
+  </div>
+  </section>
+  {% endblock %}
