@@ -31,6 +31,9 @@ class Cart:
     def len(self):
         return sum(c['count'] for c in self.cart.values())
     
+    def price(self):
+        return sum(c['count'] * c['price'] for c in self.cart.values())
+    
     def get_total_price(self):
         s = str(sum(c['count'] * c['price'] for c in self.cart.values()))
         return ''.join([s[i] + ' ' if i % 3 == 0 and i != len(s) else s[i] for i in range(-1, -len(s)-1, -1)])[::-1]

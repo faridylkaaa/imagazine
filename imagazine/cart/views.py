@@ -5,6 +5,15 @@ from .cart import Cart
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
 from imagazine.goods.models import Goods
+from yookassa import Configuration, Payment
+from imagazine.settings import *
+from django.urls import reverse_lazy
+import uuid
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponseRedirect, HttpResponse
+
+Configuration.account_id = YOOKASSA_SHOP_ID
+Configuration.secret_key = YOOKASSA_SECRET_KEY
 
 def avaliable(cd, cart, product):
     if cart.cart.get(str(product.id), False):
@@ -46,3 +55,37 @@ class IndexCart(View):
         for i, v in cart.cart.items():
             d[Goods.objects.get(id=i).get_model()] = {'count': v['count'], 'price': v['price']}
         return render(request, 'cart/index.html', {'cart': d, 'cart_': cart, 'form': CatrAddForm})
+    
+class PaymentView(LoginRequiredMixin, View):
+    login_url = reverse_lazy('users:login')
+    
+    def get(self, request, *args, **kwargs):
+        idempotence_key = str(uuid.uuid4())
+        cart = Cart(request)
+        payment = Payment.create({
+            "amount": {
+            "value": str(cart.price()),
+            "currency": "RUB"
+            },
+            "payment_method_data": {
+            "type": "bank_card"
+            },
+            "confirmation": {
+            "type": "redirect",
+            "return_url": str(reverse_lazy('main'))
+            },
+            "description": "Заказ в Imag"
+        }, idempotence_key)
+
+        # get confirmation url
+        confirmation_url = payment.confirmation.confirmation_url
+        
+        return HttpResponseRedirect(confirmation_url)
+    
+    
+class YoomoneyNotifView(View):
+    '''сюда приходит уведомление о том, что денбги переведены и дальше идет логика приложения'''
+    def post(self, request):
+        payment_id = request.data['object']['id']
+        Payment.capture(payment_id)
+        return HttpResponse(status=200)
