@@ -11,11 +11,15 @@ from django.urls import reverse_lazy
 import uuid
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect, HttpResponse
+from django.views.decorators.csrf import ensure_csrf_cookie
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from .models import *
 
 Configuration.account_id = YOOKASSA_SHOP_ID
 Configuration.secret_key = YOOKASSA_SECRET_KEY
 
-def avaliable(cd, cart, product):
+def avaliable_item(cart, product, cd={'count': 0}):
     if cart.cart.get(str(product.id), False):
         if cd['count'] + cart.cart[str(product.id)]['count'] > product.count:
             return False
@@ -23,6 +27,15 @@ def avaliable(cd, cart, product):
     elif cd['count'] > product.count:
         return False
     return True
+
+def avaliable_cart(cart):
+    lst = list()
+    for k, v in cart.cart.items():
+        product = get_object_or_404(Goods, id=k)
+        lst.append(avaliable_item(cart, product))
+    return all(lst)
+
+
 
 # Create your views here.
 class AddProductCartView(View):
@@ -32,7 +45,7 @@ class AddProductCartView(View):
         form = CatrAddForm(request.POST, initial={'count': 1})
         if form.is_valid():
             cd = form.clean()
-            if avaliable(cd, cart, product):
+            if avaliable_item(cart, product, cd):
                 cart.add(product, cd['count'])
                 messages.success(request, 'Товар добавлен в корзину успешно')
             else:
@@ -62,30 +75,54 @@ class PaymentView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         idempotence_key = str(uuid.uuid4())
         cart = Cart(request)
-        payment = Payment.create({
-            "amount": {
-            "value": str(cart.price()),
-            "currency": "RUB"
-            },
-            "payment_method_data": {
-            "type": "bank_card"
-            },
-            "confirmation": {
-            "type": "redirect",
-            "return_url": str(reverse_lazy('main'))
-            },
-            "description": "Заказ в Imag"
-        }, idempotence_key)
+        if avaliable_cart(cart):
+            payment = Payment.create({
+                "amount": {
+                "value": str(cart.price()),
+                "currency": "RUB"
+                },
+                "payment_method_data": {
+                "type": "bank_card"
+                },
+                "confirmation": {
+                "type": "redirect",
+                "return_url": 'https://fcc3-79-139-191-0.ngrok-free.app'+ str(reverse_lazy('main'))
+                },
+                "capture": False,
+                "description": "Заказ в Imag"
+            }, idempotence_key)
 
-        # get confirmation url
-        confirmation_url = payment.confirmation.confirmation_url
-        
-        return HttpResponseRedirect(confirmation_url)
+            # get confirmation url
+            confirmation_url = payment.confirmation.confirmation_url
+            
+            # модель заказа
+            order = Order.objects.create(order_id=payment.id, customer=request.user, payment='no')
+            for product_id, count_price in cart.cart.items():
+                product = get_object_or_404(Goods, id=product_id)
+                count = count_price['count']
+                OrderItem.objects.create(order=order, product=product, count=count)
+
+            
+            return HttpResponseRedirect(confirmation_url)
+        else:
+            messages.error(request, 'Товара уже нет в таком количестве')
+            return redirect('cart:index')
     
     
-class YoomoneyNotifView(View):
+class YoomoneyNotifView(APIView):
     '''сюда приходит уведомление о том, что денбги переведены и дальше идет логика приложения'''
     def post(self, request):
         payment_id = request.data['object']['id']
+        order = Order.objects.get(order_id=payment_id)
+        for item in order.items.all():
+            if item.count > item.product.count:
+                response = Payment.cancel(payment_id, str(uuid.uuid4()))
+                return Response(response, status=200)
+            else:
+                product = item.product
+                product.count = product.count - item.count
+                product.save()
         Payment.capture(payment_id)
-        return HttpResponse(status=200)
+        order.payment = 'yes'
+        order.save()
+        return Response(status=200)

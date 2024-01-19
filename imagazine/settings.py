@@ -29,8 +29,11 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG')
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
+CSRF_TRUSTED_ORIGINS=["https://*.ngrok-free.app"] 
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_HTTPONLY = True
 
 # Application definition
 
@@ -49,7 +52,8 @@ INSTALLED_APPS = [
     'imagazine.labels',
     'django_filters',
     'bootstrapform',
-    'imagazine.cart'
+    'imagazine.cart',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
