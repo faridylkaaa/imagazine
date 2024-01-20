@@ -15,6 +15,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import *
+from django.core.mail import send_mail
 
 Configuration.account_id = YOOKASSA_SHOP_ID
 Configuration.secret_key = YOOKASSA_SECRET_KEY
@@ -76,17 +77,34 @@ class PaymentView(LoginRequiredMixin, View):
         idempotence_key = str(uuid.uuid4())
         cart = Cart(request)
         if avaliable_cart(cart):
+            lst = list()
+            for product_id, count_price in cart.cart.items():
+                d = dict()
+                d["description"] = get_object_or_404(Goods, id=product_id).name
+                d["quantity"] = count_price['count']
+                d['amount'] = {"value": count_price['price'], "currency": "RUB"}
+                d.update({"vat_code": "2",
+                "payment_mode": "full_prepayment",
+                "payment_subject": "commodity"})
+                lst.append(d)
+                
             payment = Payment.create({
                 "amount": {
                 "value": str(cart.price()),
                 "currency": "RUB"
                 },
+                "receipt": {
+                    "customer": {
+                            "email": request.user.email
+                },
+                     "items": lst
+    },
                 "payment_method_data": {
                 "type": "bank_card"
                 },
                 "confirmation": {
                 "type": "redirect",
-                "return_url": 'https://fcc3-79-139-191-0.ngrok-free.app'+ str(reverse_lazy('main'))
+                "return_url": 'https://c1fd-79-139-191-0.ngrok-free.app'+ str(reverse_lazy('main'))
                 },
                 "capture": False,
                 "description": "Заказ в Imag"
@@ -102,7 +120,7 @@ class PaymentView(LoginRequiredMixin, View):
                 count = count_price['count']
                 OrderItem.objects.create(order=order, product=product, count=count)
 
-            
+            cart.clear_cart()
             return HttpResponseRedirect(confirmation_url)
         else:
             messages.error(request, 'Товара уже нет в таком количестве')
@@ -125,4 +143,17 @@ class YoomoneyNotifView(APIView):
         Payment.capture(payment_id)
         order.payment = 'yes'
         order.save()
+        send_mail(
+            f'Чек Imag {payment_id}',
+            'Заказ оплачен и принят в магазине. Вы можете просмотреть его в соответсвующем поле "Заказы". Если возникли какие-то проблемы - напишите на почту faridylkaaa@yandex.ru',
+            'faridylkaaa@yandex.ru',
+            recipient_list=[order.customer.email],
+            fail_silently=False
+        )
         return Response(status=200)
+    
+class OrdersView(View):
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        orders = user.orders
+        return render(request, 'cart/orders.html', {'orders': orders})

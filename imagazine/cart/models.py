@@ -4,7 +4,7 @@ from imagazine.goods.models import Goods
 
 class Order(models.Model):
     order_id = models.CharField(max_length=100, unique=True)
-    customer = models.ForeignKey(User, on_delete = models.CASCADE)
+    customer = models.ForeignKey(User, on_delete = models.CASCADE, related_name='orders')
     payment = models.CharField(max_length=50, blank=True, null=True)
     
 class OrderItem(models.Model):

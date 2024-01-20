@@ -51,6 +51,11 @@
                                     height: 100vh;
                                     background-position: center;
                                     background-repeat: no-repeat;">
+                                    {% if console.count == 0 %}
+                                    <span class="new">НЕ В НАЛИЧИИ</span>
+                                    {% elif console.count <= 3 %}
+                                    <span class="discount">МАЛО</span>
+                                    {% endif %}
                                             <ul>
                                                     <li>
                                                         <form action="{% url "cart:add" id=console.id %}" method="post">
