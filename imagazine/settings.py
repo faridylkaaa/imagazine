@@ -127,6 +127,7 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
+TIME_ZONE = 'Europe/Moscow'
 USE_TZ = True
 
 

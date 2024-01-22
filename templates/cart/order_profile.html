@@ -1,0 +1,45 @@
+{% extends "cart/order.html" %}
+{% load bootstrap5 %}
+{% load static %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{% block full_content %}
+<div>
+<h2 style="text-align: center; padding: 5%;">
+    Ваш id заказа {{ order.id }}
+</h2>
+</div>
+<table class="table" style="width: 85%; margin: auto;">
+    <thead>
+      <tr>
+        <th scope="col">id</th>
+        <th scope="col">Название</th>
+        <th scope="col">Цена</th>
+        <th scope="col">Количество</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for item in order.items.all %}
+      <tr>
+        <th scope="row">{{item.product.id}}</th>
+        {% if item.product.get_model.is_game %}
+        <td><a href="{% url "goods:profile"  pk=item.product.id%}">{{item.product.name}}</a></td>
+        {% else %}
+        <td><a href="{% url "goods:console"  pk=item.product.id %}">{{item.product.name}}</a></td>
+        {% endif %}
+        <td>{{item.product.price}}₽</td>
+        <td>{{item.count}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr>
+          <td></td>
+          <td>ИТОГ</td>
+          <td>{{order.price}}₽</td>
+          <td>{{count}}</td>
+        </tr>
+      </tfoot>
+  </table>
+  {% endblock %}

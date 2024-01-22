@@ -16,6 +16,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import *
 from django.core.mail import send_mail
+from imagazine.cart.mixins import RightUserMixinOrder
+from django.views.generic import DetailView
 
 Configuration.account_id = YOOKASSA_SHOP_ID
 Configuration.secret_key = YOOKASSA_SECRET_KEY
@@ -104,7 +106,7 @@ class PaymentView(LoginRequiredMixin, View):
                 },
                 "confirmation": {
                 "type": "redirect",
-                "return_url": 'https://c1fd-79-139-191-0.ngrok-free.app'+ str(reverse_lazy('main'))
+                "return_url": 'https://0ca1-79-139-191-0.ngrok-free.app'+ str(reverse_lazy('main'))
                 },
                 "capture": False,
                 "description": "Заказ в Imag"
@@ -119,7 +121,10 @@ class PaymentView(LoginRequiredMixin, View):
                 product = get_object_or_404(Goods, id=product_id)
                 count = count_price['count']
                 OrderItem.objects.create(order=order, product=product, count=count)
-
+                
+            order.price = int(payment['amount']['value'][:-3])
+            order.created_at = payment['created_at']
+            order.save()
             cart.clear_cart()
             return HttpResponseRedirect(confirmation_url)
         else:
@@ -152,8 +157,19 @@ class YoomoneyNotifView(APIView):
         )
         return Response(status=200)
     
-class OrdersView(View):
+class OrdersView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         user = request.user
-        orders = user.orders
+        orders = user.orders.filter(payment='yes').order_by('-created_at')
         return render(request, 'cart/orders.html', {'orders': orders})
+    
+class OrderView(RightUserMixinOrder, DetailView):
+    context_object_name = 'order'
+    template_name = 'cart/order_profile.html'
+    model = Order
+    
+    def get_context_data(self, **kwargs):
+        content = super().get_context_data(**kwargs)
+        content['title'] = 'Заказ №'+str(content['order'].id)
+        content['count'] = sum(item.count for item in content['order'].items.all())
+        return content

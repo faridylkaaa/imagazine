@@ -1,0 +1,33 @@
+{% extends "cart/order.html" %}
+{% load bootstrap5 %}
+{% load static %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{% block full_content %}
+<div>
+<h2 style="text-align: center; padding: 5%;">
+    Ваши Заказы
+</h2>
+</div>
+<table class="table" style="width: 85%; margin: auto;">
+    <thead>
+      <tr>
+        <th scope="col">id</th>
+        <th scope="col">Номер заказа</th>
+        <th scope="col">Цена</th>
+        <th scope="col">Дата</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}
+      <tr>
+        <th scope="row">{{order.id}}</th>
+        <td><a href="{% url "cart:order" pk=order.id %}">{{order.order_id}}</a></td>
+        <td>{{order.price}}₽</td>
+        <td>{{order.created_at}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endblock %}
