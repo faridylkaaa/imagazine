@@ -18,6 +18,9 @@ from .models import *
 from django.core.mail import send_mail
 from imagazine.cart.mixins import RightUserMixinOrder
 from django.views.generic import DetailView
+from imagazine.coupons.forms import CouponForm
+from imagazine.coupons.models import Coupons
+from datetime import datetime as dtim
 
 Configuration.account_id = YOOKASSA_SHOP_ID
 Configuration.secret_key = YOOKASSA_SECRET_KEY
@@ -70,7 +73,23 @@ class IndexCart(View):
         d = dict()
         for i, v in cart.cart.items():
             d[Goods.objects.get(id=i).get_model()] = {'count': v['count'], 'price': v['price']}
-        return render(request, 'cart/index.html', {'cart': d, 'cart_': cart, 'form': CatrAddForm})
+        return render(request, 'cart/index.html', {'cart': d, 'cart_': cart, 'form': CatrAddForm, 'form_p': CouponForm(initial={'coupon': request.session.get('code', '')})})
+    
+    def post(self, request, *args, **kwargs):
+        form = CouponForm(request.POST)
+        if form.is_valid():
+            coupon = form.cleaned_data['coupon']
+            datetime = dtim.now()
+            try:
+                c = Coupons.objects.get(code=coupon, valid_from__lte=datetime, valid_to__gte=datetime, active=True)
+                discount = c.discount
+                cart = Cart(request)
+                cart.discount(discount)
+                request.session['code'] = coupon
+            except:
+                messages.error(request, 'Нет такого промокода')
+        
+        return redirect('cart:index')
     
 class PaymentView(LoginRequiredMixin, View):
     login_url = reverse_lazy('users:login')
@@ -84,7 +103,7 @@ class PaymentView(LoginRequiredMixin, View):
                 d = dict()
                 d["description"] = get_object_or_404(Goods, id=product_id).name
                 d["quantity"] = count_price['count']
-                d['amount'] = {"value": count_price['price'], "currency": "RUB"}
+                d['amount'] = {"value": count_price['price'] - (cart.session['discount'] / 100) * count_price['price'], "currency": "RUB"}
                 d.update({"vat_code": "2",
                 "payment_mode": "full_prepayment",
                 "payment_subject": "commodity"})

@@ -68,7 +68,12 @@ active
                   </tbody>
               </table>
               <div class="float-right text-right">
-                  <h4>Итог:</h4>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form_p }}
+                    <input type="submit" class="btn btn-primary" value="Применить" style="margin: 10px; margin-left: 0px">
+                </form>
+                  <h4>Итог: ( с учётом скидок )</h4>
                   <h1>{{ cart_.get_total_price }}₽</h1>
               </div>
           </div>

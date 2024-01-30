@@ -8,6 +8,8 @@ class Cart:
         cart = self.session.get(settings.CART_SESSION_ID)
         if not cart:
             cart = self.session[settings.CART_SESSION_ID] = {}
+        if 'discount' not in self.session.keys():
+            self.session['discount'] = 0
         self.cart = cart
         
     def save(self):
@@ -31,11 +33,17 @@ class Cart:
     def len(self):
         return sum(c['count'] for c in self.cart.values())
     
+    def discount(self, d=0):
+        self.session['discount'] = d
+        self.save()
+    
     def price(self):
-        return sum(c['count'] * c['price'] for c in self.cart.values())
+        s = sum(c['count'] * c['price'] for c in self.cart.values()) 
+        return int(s - (s * (self.session['discount'] / 100)))
+        return s
     
     def get_total_price(self):
-        s = str(sum(c['count'] * c['price'] for c in self.cart.values()))
+        s = str(self.price())
         return ''.join([s[i] + ' ' if i % 3 == 0 and i != len(s) else s[i] for i in range(-1, -len(s)-1, -1)])[::-1]
     
     def clear_cart(self):

@@ -53,7 +53,8 @@ INSTALLED_APPS = [
     'django_filters',
     'bootstrapform',
     'imagazine.cart',
-    'rest_framework'
+    'rest_framework',
+    'imagazine.coupons'
 ]
 
 MIDDLEWARE = [
